@@ -1,0 +1,49 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="plone"
+    >
+
+    <include package="plone.contentrules" />
+    <include package="plone.contentrules" file="meta.zcml" />
+
+    <utility
+        component=".vocabularies.RolesVocabularyFactory"
+        name="collective.contentrules.mustread.roles"
+        provides="zope.schema.interfaces.IVocabularyFactory" />
+
+    <!-- Email action definition -->
+
+     <adapter factory=".mail.MustReadSendConfirmationExecutor" />
+     <adapter factory=".mail.MustReadReminderExecutor" />
+
+     <browser:page
+       for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
+       name="plone.actions.MustRead"
+       class=".mail.MustReadAddForm"
+       permission="cmf.ManagePortal"
+       />
+
+     <browser:page
+       for="collective.contentrules.mustread.actions.mail.IMustReadAction"
+       name="edit"
+       class=".mail.MustReadEditForm"
+       permission="cmf.ManagePortal"
+       />
+
+     <plone:ruleAction
+         name="plone.actions.MustRead"
+         title="Request read confirmation"
+         description="Send an email on the triggering object and require a read confirmation"
+         for="*"
+         event="zope.component.interfaces.IObjectEvent"
+         addview="plone.actions.MustRead"
+         editview="edit"
+         schema=".mail.IMustReadAction"
+         factory=".mail.MustReadAction"
+         />
+
+</configure>

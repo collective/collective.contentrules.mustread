@@ -1,0 +1,68 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.contentrules.mustread">
+
+  <i18n:registerTranslations directory="locales" />
+
+  <includeDependencies package="." />
+
+  <include file="permissions.zcml" />
+  <include package=".actions" />
+  <include package=".browser" />
+
+  <interface
+      interface=".interfaces.IMustReadEvent"
+      type="plone.contentrules.rule.interfaces.IRuleEventType"
+      name="Read confirmation requested"
+      />
+
+  <subscriber
+      for=".interfaces.IMustReadEvent"
+      handler="plone.app.contentrules.handlers.execute_rules"
+      />
+
+  <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.Fullname"
+    name="mustread_fullname" />
+
+  <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.Deadline"
+    name="mustread_deadline" />
+
+  <adapter
+    for="*"
+    provides="plone.stringinterp.interfaces.IStringSubstitution"
+    factory=".stringinterp.URL"
+    name="mustread_url" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.contentrules.mustread"
+      directory="profiles/default"
+      description="Installs the collective.contentrules.mustread add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.contentrules.mustread (uninstall)"
+      directory="profiles/uninstall"
+      description="Uninstalls the collective.contentrules.mustread add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="collective.contentrules.mustread-hiddenprofiles" />
+
+
+
+</configure>

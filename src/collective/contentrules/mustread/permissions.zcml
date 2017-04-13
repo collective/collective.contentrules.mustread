@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="collective.contentrules.mustread">
+
+  <permission
+      id="collective.contentrules.mustread.RequestReadConfirmation"
+      title="collective.contentrules.mustread: Request read confirmation" />
+
+  <permission
+      id="collective.contentrules.mustread.AccessReadStatistics"
+      title="collective.contentrules.mustread: Access read statistics" />
+
+
+</configure>

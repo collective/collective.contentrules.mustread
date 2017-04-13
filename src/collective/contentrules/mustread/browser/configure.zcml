@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.contentrules.mustread">
+
+  <browser:page
+      for="*"
+      name="request-read-confirmation"
+      class=".views.RequestReadConfirmation"
+      permission="collective.contentrules.mustread.RequestReadConfirmation"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+  <browser:page
+      for="*"
+      name="send-read-reminders"
+      class=".views.SendReminders"
+      permission="collective.contentrules.mustread.RequestReadConfirmation"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+  <browser:page
+      for="*"
+      name="read-statistic-csv"
+      class=".stats.CSVExport"
+      permission="collective.contentrules.mustread.AccessReadStatistics"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+</configure>
