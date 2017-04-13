@@ -384,6 +384,13 @@ class MustReadReminderExecutor(BaseExecutor):
     def __call__(self):
         obj = self.event.object
         path = '/'.join(obj.getPhysicalPath())
+
+        if not self.element.reminder_message.strip():
+            logger.info((
+                'no reminder message set, '
+                'not sending a reminder to for {0}').format(path))
+            return
+
         tracker = getUtility(ITracker)
         today = datetime.utcnow().date()
         remind_today = []

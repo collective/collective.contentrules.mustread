@@ -62,7 +62,7 @@ class TestMustReadContentRule(unittest.TestCase):
         self.installer.installProduct('collective.contentrules.mustread')
 
         # replace mailhost
-        # XXX this needs a new version of plone.app.testing:
+        # this needs a new version of plone.app.testing:
         # see https://github.com/plone/plone.app.testing/pull/40
         self.portal._original_MailHost = self.portal.MailHost
         self.portal.MailHost = mailhost = MockMailHost('MailHost')
@@ -394,7 +394,11 @@ class TestMustReadContentRule(unittest.TestCase):
         self.assertEqual(msg['To'],
                          'user3@plone.org')
 
-        # XXX test for no message text, no reminder is sent
+        # if no reminder message is set, no reminder is sent
+        e.reminder_message = u''
+        del self.portal.MailHost.messages[:]
+        ex()
+        self.assertEqual(len(messages), 0)
 
     def assertEqualEllipsis(self, first, second,
                             ellipsis_marker='...', msg=None):
