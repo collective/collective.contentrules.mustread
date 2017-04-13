@@ -21,6 +21,10 @@ before_script:
 script:
   - bin/code-analysis
   - bin/test
+after_script:
+# Firefox may have trouble saying goodbye.
+# So kill it, but don't complain when it is not there.
+  - pkill -9 firefox || true
 after_success:
   - bin/createcoverage
   - pip install coveralls
