@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
-from Products.Five.browser import BrowserView
-from Products.statusmessages.interfaces import IStatusMessage
 from collective.contentrules.mustread import _
 from collective.contentrules.mustread.event import ReadConfirmationRequestEvent
 from collective.contentrules.mustread.event import ReadReminderEvent
 from collective.mustread.interfaces import ITracker
 from plone import api
+from Products.Five.browser import BrowserView
 from zope import event
 from zope.component import getUtility
 
@@ -38,17 +37,19 @@ class SendReminders(BrowserView):
             notified.append('/'.join(obj.getPhysicalPath()))
 
         if notified:
-            IStatusMessage(self.request).add(_(
+            api.portal.show_message(_(
                 u'msg_reminder_fired',
                 default=(
                     u'Reminder event fired for ${count} objects: ${objects}'),
                 mapping={'count': len(notified),
                          'objects': ', '.join(notified)}),
+                self.request,
                 'info')
         else:
-            IStatusMessage(self.request).add(_(
+            api.portal.show_message(_(
                 u'msg_no_reminder_fired',
                 default=u'No reminder event fired'),
+                self.request,
                 'info')
 
         props = api.portal.get_tool('portal_properties').site_properties

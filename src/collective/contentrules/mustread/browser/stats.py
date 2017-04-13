@@ -1,7 +1,8 @@
-from Products.Five.browser import BrowserView
-from cStringIO import StringIO
+# -*- coding: utf-8 -*-
 from collective.mustread.interfaces import ITracker
+from cStringIO import StringIO
 from datetime import date
+from Products.Five.browser import BrowserView
 from zope.component import getUtility
 
 
@@ -18,6 +19,6 @@ class CSVExport(BrowserView):
             path='-'.join(self.context.getPhysicalPath()))
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="{}"'.format(fname))
+            'Content-Disposition', 'attachment; filename="{0}"'.format(fname))
 
         return csv.getvalue()

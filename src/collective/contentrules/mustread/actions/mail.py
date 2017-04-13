@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner
-from OFS.SimpleItem import SimpleItem
-from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
 from collective.contentrules.mustread import _
 from collective.contentrules.mustread import config
 from collective.contentrules.mustread.interfaces import IReadReminder
@@ -10,6 +6,7 @@ from collective.mustread.interfaces import ITracker
 from datetime import datetime
 from datetime import timedelta
 from email.utils import formataddr
+from OFS.SimpleItem import SimpleItem
 from plone import api
 from plone.app.contentrules.browser.formhelper import AddForm
 from plone.app.contentrules.browser.formhelper import EditForm
@@ -23,9 +20,11 @@ from zope.component import getUtility
 from zope.component.interfaces import IObjectEvent
 from zope.formlib import form
 from zope.i18nmessageid import MessageFactory
-from zope.interface import Interface
 from zope.interface import implements
+from zope.interface import Interface
+
 import logging
+
 
 logger = logging.getLogger('collective.contentrules.mustread')
 
@@ -37,10 +36,10 @@ class IMustReadAction(Interface):
     """
 
     source = schema.TextLine(
-        title=_p(u"Email source"),
+        title=_p(u'Email source'),
         description=_p(
-            ("The email address that sends the email. If no email is "
-             "provided here, it will use the portal from address.")),
+            ('The email address that sends the email. If no email is '
+             'provided here, it will use the portal from address.')),
         required=False)
 
     role = schema.Choice(
@@ -51,7 +50,7 @@ class IMustReadAction(Interface):
                 u"Select a role. The action will look up the all Plone site "
                 u"users who explicitly have this role (also via groups) on the"
                 u" object and send a message to their email address.")),
-        vocabulary="collective.contentrules.mailtorole.roles",
+        vocabulary='collective.contentrules.mailtorole.roles',
         required=True)
 
     acquired = schema.Bool(
@@ -195,15 +194,18 @@ class BaseExecutor(object):
         if self.element.acquired:
             sharing_page = obj.unrestrictedTraverse('@@sharing')
             acquired_roles = sharing_page._inherited_roles()
-            if hasattr(sharing_page, '_borg_localroles'):
+            try:
                 acquired_roles += sharing_page._borg_localroles()
+            except AttributeError:
+                # ignore if method is missing
+                pass
             acquired_users = [r[0] for r in acquired_roles
                               if self.element.role in r[1]]
             recipients.update(acquired_users)
 
         # check for the global roles
         if self.element.global_roles:
-            pas = getToolByName(self.event.object, 'acl_users')
+            pas = api.portal.get_tool('acl_users')
             rolemanager = pas.portal_role_manager
             global_role_ids = [
                 p[0] for p in
@@ -212,13 +214,12 @@ class BaseExecutor(object):
 
         # check to see if the recipients are users or groups
         group_ids = set()  # ids of affected groups - will be filtered out
-        group_tool = api.portal.get_tool('portal_groups')
 
         def _getGroupMemberIds(group):
-            """ Helper method to support groups in groups. """
+            """Helper method to support groups in groups."""
             members = []
             for member_id in group.getGroupMemberIds():
-                subgroup = group_tool.getGroupById(member_id)
+                subgroup = api.group.get(member_id)
                 if subgroup is not None:
                     members.extend(_getGroupMemberIds(subgroup))
                 else:
@@ -226,7 +227,7 @@ class BaseExecutor(object):
             return members
 
         for recipient in list(recipients):
-            group = group_tool.getGroupById(recipient)
+            group = api.group.get(recipient)
             if group is not None:
                 group_ids.add(recipient)
                 recipients.update(_getGroupMemberIds(group))
@@ -248,8 +249,8 @@ class BaseExecutor(object):
             from_address = portal.getProperty('email_from_address')
             if not from_address:
                 raise ValueError((
-                    "You must provide a source address for this action or "
-                    "enter an email in the portal properties"))
+                    'You must provide a source address for this action or '
+                    'enter an email in the portal properties'))
             from_name = portal.getProperty('email_from_name').strip('"')
             source = formataddr((from_name, from_address))
 
@@ -275,7 +276,7 @@ class BaseExecutor(object):
             interpolator = self._get_interpolator(user)
             # Prepend interpolated message with \n to avoid interpretation
             # of first line as header.
-            message = "\n%s" % interpolator(text)
+            message = '\n' + interpolator(text)
             subject = interpolator(subject)
 
             mailhost.send(
@@ -345,7 +346,7 @@ class MustReadSendConfirmationExecutor(BaseExecutor):
                         self.element.notification_subject,
                         self.element.notification_message)
 
-        IStatusMessage(self.context.REQUEST).add(_(
+        api.portal.show_message(_(
             u'msg-confirmation-requested',
             default=(
                 u'Read confirmation requested by ${deadline} for ${count} '
@@ -353,8 +354,9 @@ class MustReadSendConfirmationExecutor(BaseExecutor):
             mapping=dict(
                 count=len(new_users),
                 deadline=api.portal.get_localized_time(deadline, True),
-                userlist=', '.join(new_users))
-        ), 'info')
+                userlist=', '.join(new_users))),
+            self.context.REQUEST,
+            'info')
 
 
 class MustReadReminderExecutor(BaseExecutor):

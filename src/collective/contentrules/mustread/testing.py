@@ -24,7 +24,7 @@ class CollectiveContentrulesMustreadLayer(PloneSandboxLayer):
         applyProfile(portal, 'collective.contentrules.mustread:default')
 
 
-COLLECTIVE_CONTENTRULES_MUSTREAD_FIXTURE = CollectiveContentrulesMustreadLayer()
+COLLECTIVE_CONTENTRULES_MUSTREAD_FIXTURE = CollectiveContentrulesMustreadLayer()  # noqa
 
 
 COLLECTIVE_CONTENTRULES_MUSTREAD_INTEGRATION_TESTING = IntegrationTesting(

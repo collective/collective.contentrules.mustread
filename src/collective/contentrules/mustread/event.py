@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from collective.contentrules.mustread.interfaces import IReadConfirmationRequest  # noqa
 from collective.contentrules.mustread.interfaces import IReadReminder
 from zope.component.interfaces import ObjectEvent

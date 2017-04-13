@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
-from Products.statusmessages.interfaces import IStatusMessage
 from collective.contentrules.mustread import config
 from collective.contentrules.mustread.actions.mail import MustReadAction
 from collective.contentrules.mustread.actions.mail import MustReadAddForm
@@ -19,17 +16,22 @@ from datetime import timedelta
 from email import message_from_string
 from plone import api
 from plone.app.contentrules.rule import Rule
-from plone.app.testing import TEST_USER_NAME, TEST_USER_ID
 from plone.app.testing import login
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.contentrules.engine.interfaces import IRuleStorage
 from plone.contentrules.rule.interfaces import IExecutable
 from plone.contentrules.rule.interfaces import IRuleAction
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
+from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component.interfaces import IObjectEvent
 from zope.interface import implements
+
 import re
 import unittest
 
@@ -70,9 +72,9 @@ class TestMustReadContentRule(unittest.TestCase):
 
         login(self.portal, TEST_USER_NAME)
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        self.folder = api.content.create(self.portal, 'Folder', title="Folder")
+        self.folder = api.content.create(self.portal, 'Folder', title='Folder')
         self.page1 = api.content.create(
-            self.folder, 'Document', title="Page 1")
+            self.folder, 'Document', title='Page 1')
 
         user1 = api.user.create('user1@plone.org', 'user1',
                                 properties={'fullname': u'User 1 Fullname'})
@@ -97,10 +99,10 @@ class TestMustReadContentRule(unittest.TestCase):
 
     def test_registered(self):
         element = getUtility(IRuleAction, name='plone.actions.MustRead')
-        self.assertEquals('plone.actions.MustRead', element.addview)
-        self.assertEquals('edit', element.editview)
-        self.assertEquals(None, element.for_)
-        self.assertEquals(IObjectEvent, element.event)
+        self.assertEqual('plone.actions.MustRead', element.addview)
+        self.assertEqual('edit', element.editview)
+        self.assertEqual(None, element.for_)
+        self.assertEqual(IObjectEvent, element.event)
 
     def test_addview(self):
         element = getUtility(IRuleAction, name='plone.actions.MustRead')
@@ -111,7 +113,7 @@ class TestMustReadContentRule(unittest.TestCase):
         adding = getMultiAdapter((rule, self.portal.REQUEST), name='+action')
         addview = getMultiAdapter((adding, self.portal.REQUEST),
                                   name=element.addview)
-        self.failUnless(isinstance(addview, MustReadAddForm))
+        self.assertTrue(isinstance(addview, MustReadAddForm))
 
         addview.createAndAdd(data=dict(
             notification_subject=config.DEFAULT_NOTIFICATION_SUBJECT,
@@ -142,14 +144,14 @@ class TestMustReadContentRule(unittest.TestCase):
         e = MustReadAction()
         editview = getMultiAdapter((e, self.portal.REQUEST),
                                    name=element.editview)
-        self.failUnless(isinstance(editview, MustReadEditForm))
+        self.assertTrue(isinstance(editview, MustReadEditForm))
 
     def test_affected_users(self):
         """test computation of affected users via local roles
         (acquired and not) and global_roles
         """
         e = MustReadAction()
-        e.role = "Reader"
+        e.role = 'Reader'
         e.acquired = False
         e.global_roles = False
         ex = getMultiAdapter((self.folder, e, DummyEvent(self.page1)),
@@ -174,7 +176,7 @@ class TestMustReadContentRule(unittest.TestCase):
         self.assertEqual(sorted(ex.affected_users), ['user1', 'user2'])
 
         # test global roles
-        e.role = "Editor"
+        e.role = 'Editor'
         e.global_roles = True
         self.assertEqual(0, len(ex.affected_users))
         api.user.grant_roles('user1', roles=['Editor'])
@@ -184,7 +186,7 @@ class TestMustReadContentRule(unittest.TestCase):
         """test computation of affected users via groups
         """
         e = MustReadAction()
-        e.role = "Reader"
+        e.role = 'Reader'
         e.acquired = False
         e.global_roles = False
         ex = getMultiAdapter((self.folder, e, DummyEvent(self.page1)),
@@ -263,7 +265,7 @@ class TestMustReadContentRule(unittest.TestCase):
         the correct users receive an email
         """
         e = MustReadAction()
-        e.role = "Reader"
+        e.role = 'Reader'
         e.acquired = True
         e.global_roles = False
         e.deadline = 10
@@ -294,7 +296,7 @@ class TestMustReadContentRule(unittest.TestCase):
             deadline.date())
 
         # the user that invoked the action get's feedback in a status message
-        messages = IStatusMessage(self.folder.REQUEST).show()
+        messages = IStatusMessage(self.folder.REQUEST).show()  # noqa
         self.assertEqualEllipsis(
             messages[0].message,
             u'Read confirmation requested by ... for 2 users: user1, user2')
@@ -336,7 +338,7 @@ class TestMustReadContentRule(unittest.TestCase):
         - correct date computation
         """
         e = MustReadAction()
-        e.role = "Reader"
+        e.role = 'Reader'
         e.reminder_delay = 2
         e.reminder_subject = u'Reminder, please read ${title}'
         e.reminder_message = (
@@ -391,6 +393,8 @@ class TestMustReadContentRule(unittest.TestCase):
         msg = message_from_string(messages[0])
         self.assertEqual(msg['To'],
                          'user3@plone.org')
+
+        # XXX test for no message text, no reminder is sent
 
     def assertEqualEllipsis(self, first, second,
                             ellipsis_marker='...', msg=None):

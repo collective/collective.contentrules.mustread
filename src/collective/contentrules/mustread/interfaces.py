@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope.component.interfaces import IObjectEvent
-from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
 
 class IMustReadEvent(IObjectEvent):
     """base class for all events that shall trigger content rules engine"""

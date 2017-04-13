@@ -1,26 +1,28 @@
 # -*- coding: utf-8 -*-
+from AccessControl import Unauthorized
 from Acquisition import aq_base
-from Products.CMFPlone.tests.utils import MockMailHost
-from Products.MailHost.interfaces import IMailHost
-from Products.statusmessages.interfaces import IStatusMessage
 from collective.contentrules.mustread import testing
 from collective.contentrules.mustread.interfaces import IMustReadEvent
-from collective.contentrules.mustread.interfaces import IReadConfirmationRequest
+from collective.contentrules.mustread.interfaces import IReadConfirmationRequest  # noqa
 from collective.contentrules.mustread.interfaces import IReadReminder
 from collective.mustread.testing import tempDb
 from collective.mustread.tracker import Tracker
 from datetime import datetime
 from datetime import timedelta
 from plone import api
-from plone.app.testing import TEST_USER_NAME, TEST_USER_ID
 from plone.app.testing import login
-from plone.app.testing import logout
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
+from Products.statusmessages.interfaces import IStatusMessage
+from StringIO import StringIO
+
+import csv
 import unittest
 import zope.component
-from AccessControl import Unauthorized
-import csv
-from StringIO import StringIO
+
 
 class EventCatcher(object):
 
@@ -131,7 +133,7 @@ class TestMustReadViews(unittest.TestCase):
         view()
         self.assertEqual(len(self.event_catcher.fired), 0)
         # a status message indicates if reminders have been sent
-        messages = IStatusMessage(self.portal.REQUEST).show()
+        messages = IStatusMessage(self.portal.REQUEST).show()  # noqa
         self.assertEqual(
             messages[-1].message,
             u'No reminder event fired')
@@ -147,7 +149,7 @@ class TestMustReadViews(unittest.TestCase):
             IReadReminder.providedBy(event))
         self.assertEqual(event.object, self.page1)
         # a status message indicates if reminders have been sent
-        messages = IStatusMessage(self.portal.REQUEST).show()
+        messages = IStatusMessage(self.portal.REQUEST).show()  # noqa
         self.assertEqual(
             messages[-1].message,
             u'Reminder event fired for 1 objects: /plone/folder/page-1')
