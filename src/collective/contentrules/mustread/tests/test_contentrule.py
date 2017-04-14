@@ -295,7 +295,7 @@ class TestMustReadContentRule(unittest.TestCase):
             self.tracker.who_must_read(self.page1)['user1'].date(),
             deadline.date())
 
-        # the user that invoked the action get's feedback in a status message
+        # the user that invoked the action gets feedback in a status message
         messages = IStatusMessage(self.folder.REQUEST).show()  # noqa
         self.assertEqualEllipsis(
             messages[0].message,

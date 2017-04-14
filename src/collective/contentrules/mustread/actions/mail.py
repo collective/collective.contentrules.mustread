@@ -330,7 +330,9 @@ class MustReadSendConfirmationExecutor(BaseExecutor):
         users = self.affected_users
 
         tracker = getUtility(ITracker)
-        new_users = tracker.schedule_must_read(obj, users, deadline)
+        current_user = api.user.get_current().id
+        new_users = tracker.schedule_must_read(obj, users, deadline,
+                                               current_user)
 
         logger.info((
             'scheduled mustread on {path}, deadline '

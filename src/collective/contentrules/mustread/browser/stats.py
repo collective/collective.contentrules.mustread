@@ -8,17 +8,24 @@ from zope.component import getUtility
 
 class CSVExport(BrowserView):
 
+    # allows to customize exported columns in subclasses
+    fieldnames = []
+
+    @property
+    def filename(self):
+        return 'must-read-{date:%Y-%m-%d}-{path}'.format(
+            date=date.today(),
+            path='-'.join(self.context.getPhysicalPath()))
+
     def __call__(self):
 
         tracker = getUtility(ITracker)
 
         csv = StringIO()
-        tracker.get_stats_csv(csv, self.context)
-        fname = 'must-read-{date:%Y-%m-%d}-{path}'.format(
-            date=date.today(),
-            path='-'.join(self.context.getPhysicalPath()))
+        tracker.get_report_csv(csv, self.context, fieldnames=self.fieldnames)
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="{0}"'.format(fname))
+            'Content-Disposition', 'attachment; filename="{0}"'.format(
+                self.filename))
 
         return csv.getvalue()
