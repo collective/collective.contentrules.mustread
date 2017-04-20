@@ -362,8 +362,7 @@ class MustReadSendConfirmationExecutor(BaseExecutor):
 
 
 class MustReadReminderExecutor(BaseExecutor):
-    """reminds users that have open read requests
-    via email
+    """reminds users that have open read requests via email
 
     This can only be triggered by an IReadReminder event.
     (which is typically notified by the @@send-read-reminders view.
@@ -387,7 +386,8 @@ class MustReadReminderExecutor(BaseExecutor):
         obj = self.event.object
         path = '/'.join(obj.getPhysicalPath())
 
-        if not self.element.reminder_message.strip():
+        msg = self.element.reminder_message
+        if not (msg and msg.strip()):
             logger.info((
                 'no reminder message set, '
                 'not sending a reminder to for {0}').format(path))
@@ -396,11 +396,14 @@ class MustReadReminderExecutor(BaseExecutor):
         tracker = getUtility(ITracker)
         today = datetime.utcnow().date()
         remind_today = []
+        too_early = []
         for userid, deadline in tracker.who_must_read(obj).iteritems():
             reminder_date = (
                 deadline - timedelta(self.element.reminder_delay)).date()
             if reminder_date == today:
                 remind_today.append(userid)
+            if reminder_date > today:
+                too_early.append((userid, deadline))
 
         if remind_today:
             logger.info(
@@ -408,6 +411,14 @@ class MustReadReminderExecutor(BaseExecutor):
                     count=len(remind_today), path=path,
                     userlist=', '.join(remind_today)
                 ))
+        if too_early:
+            logger.info((
+                u'too early to remind {count} users for {path}: '
+                u'{userlist}').format(
+                    count=len(too_early), path=path,
+                    userlist=', '.join([
+                        '{0}({1:%Y-%m-%d})'.format(*u) for u in too_early])
+                    ))
 
         self._send_mail(remind_today, self.element.reminder_subject,
                         self.element.reminder_message)
