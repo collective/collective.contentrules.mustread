@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-04-06 18:48+0000\n"
+"POT-Creation-Date: 2017-04-20 20:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,94 +17,146 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.contentrules.mustread\n"
 
-#: ../configure.zcml:28
+#: ../configure.zcml:51
 msgid "Installs the collective.contentrules.mustread add-on."
 msgstr ""
 
-#: ../actions/mail.py:67
+#: ../actions/mail.py:82
 msgid "Notification Message"
+msgstr ""
+
+#: ../actions/mail.py:76
+msgid "Notification Subject"
 msgstr ""
 
 #: ../configure.zcml:19
 msgid "Read confirmation requested"
 msgstr ""
 
-#: ../actions/mail.py:78
+#: ../actions/mail.py:100
 msgid "Reminder Message"
 msgstr ""
 
-#: ../configure.zcml:37
+#: ../actions/mail.py:94
+msgid "Reminder Subject"
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "Request read confirmation"
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "Schedules a read request and notifies users via email"
+msgstr ""
+
+#: ../configure.zcml:60
 msgid "Uninstalls the collective.contentrules.mustread add-on."
 msgstr ""
 
-#: ../configure.zcml:28
+#: ../configure.zcml:51
 msgid "collective.contentrules.mustread"
 msgstr ""
 
-#: ../configure.zcml:37
+#: ../configure.zcml:60
 msgid "collective.contentrules.mustread (uninstall)"
 msgstr ""
 
 #. Default: "Should users that have this role as an acquired role also receive this email?"
-#: ../actions/mail.py:50
+#: ../actions/mail.py:58
 msgid "field_acquired_description"
 msgstr ""
 
 #. Default: "Acquired Roles"
-#: ../actions/mail.py:49
+#: ../actions/mail.py:57
 msgid "field_acquired_title"
 msgstr ""
 
 #. Default: "Should users that have this role as a role in the whole site also receive this email?"
-#: ../actions/mail.py:59
+#: ../actions/mail.py:68
 msgid "field_global_roles_description"
 msgstr ""
 
 #. Default: "Global Roles"
-#: ../actions/mail.py:58
+#: ../actions/mail.py:67
 msgid "field_global_roles_title"
 msgstr ""
 
 #. Default: "Type in here the message that you want to mail. Some defined content can be replaced: ${title} will be replaced by the title of the newly created item. ${url} will be replaced by the URL of the newly created item."
-#: ../actions/mail.py:68
+#: ../actions/mail.py:83
 msgid "field_message_description"
 msgstr ""
 
-#. Default: "Type in here the message that you want to mail. Some defined content can be replaced: ${title} will be replaced by the title of the newly created item. ${url} will be replaced by the URL of the newly created item."
-#: ../actions/mail.py:79
+#. Default: "leave empty to not send a reminder message"
+#: ../actions/mail.py:101
 msgid "field_message_reminder_description"
 msgstr ""
 
-#. Default: "Select a role. The action will look up the all Plone site users who explicitly have this role on the object and send a message to their email address."
-#: ../actions/mail.py:39
+#. Default: "Select a role. The action will look up the all Plone site users who explicitly have this role (also via groups) on the object and send a message to their email address."
+#: ../actions/mail.py:47
 msgid "field_role_description"
 msgstr ""
 
 #. Default: "Role"
-#: ../actions/mail.py:38
+#: ../actions/mail.py:46
 msgid "field_role_title"
 msgstr ""
 
 #. Default: "A mail action that can mail plone users who have a role on the object"
-#: ../actions/mail.py:136
+#: ../actions/mail.py:427
 msgid "form_description"
 msgstr ""
 
-#: ../browser/views.py:21
+#. Default: "Number of days a read requests must be confirmed within. Will be used to compute the deadline of requests."
+#: ../actions/mail.py:111
+msgid "help_deadline"
+msgstr ""
+
+#. Default: "Defines how many days before the deadline a reminder email will be sent"
+#: ../actions/mail.py:122
+msgid "help_reminder-delay"
+msgstr ""
+
+#. Default: "Deadline Delay"
+#: ../actions/mail.py:110
+msgid "label_deadline"
+msgstr ""
+
+#. Default: "Reminder Delay"
+#: ../actions/mail.py:121
+msgid "label_reminder-delay"
+msgstr ""
+
+#. Default: "Read confirmation requested by ${deadline} for ${count} users: ${userlist}"
+#: ../actions/mail.py:351
 msgid "msg-confirmation-requested"
 msgstr ""
 
+#. Default: "No reminder event fired"
+#: ../browser/views.py:49
+msgid "msg_no_reminder_fired"
+msgstr ""
+
+#. Default: "Reminder event fired for ${count} objects: ${objects}"
+#: ../browser/views.py:40
+msgid "msg_reminder_fired"
+msgstr ""
+
 #. Default: "Request confirmation for users with role '${role}' on the object (deadline today + ${days} days, reminder ${reminder} days before deadline)"
-#: ../actions/mail.py:106
+#: ../actions/mail.py:163
 msgid "rule_description"
 msgstr ""
 
+#. Default: "Request confirmation for users with role '${role}' on the object (deadline today + ${days} days, no reminder)"
+#: ../actions/mail.py:155
+msgid "rule_description_noreminder"
+msgstr ""
+
 #. Default: "Add MustRead Action"
-#: ../actions/mail.py:148
+#: ../actions/mail.py:440
 msgid "title_addform"
 msgstr ""
 
 #. Default: "Edit MustRead Action"
-#: ../actions/mail.py:163
+#: ../actions/mail.py:455
 msgid "title_editform"
 msgstr ""

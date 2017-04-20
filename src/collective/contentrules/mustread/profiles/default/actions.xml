@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<object
+    name="portal_actions"
+    meta_type="Plone Actions Tool"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+  <object name="object_buttons">
+
+    <object
+        name="request-read-confirmation"
+        meta_type="CMF Action"
+        i18n:domain="collective.contentrules.mustread">
+      <property name="title" i18n:translate="">Request read confirmation</property>
+      <property name="description" i18n:translate="">Schedules a read request and notifies users via email</property>
+      <property name="url_expr">string:${globals_view/getCurrentObjectUrl}/@@request-read-confirmation</property>
+      <property name="available_expr">python:True</property>
+      <property name="permissions">
+        <element value="collective.contentrules.mustread: Request read confirmation"/>
+      </property>
+      <property name="visible">True</property>
+    </object>
+
+  </object>
+</object>

@@ -24,4 +24,3 @@ msgstr "Lesebestätigung wurde angefordert"
 #: ../actions/configure.zcml:46
 msgid "Request read confirmation"
 msgstr "Lesebestätigung anfordern"
-
