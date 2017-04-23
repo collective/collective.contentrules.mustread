@@ -122,7 +122,6 @@ You can also `Setup an expiration notification`_ (an email report of missed read
 
 There is a csv export (`@@read-statistic-csv`) that lists all mustread records (useful as audit-log or doing advanced spreadsheet-magic).
 
-.. XXX add action for this view (in portal level?)
 
 
 Setup a reminder
@@ -165,7 +164,7 @@ Todos
   * read after deadline
   * not read at all
 
-- Idea: separate action for notifications so we can define multiple notifications with different delays and texts
+- Idea: separate content-action for notifications so we can define multiple notifications with different delays and texts
 
 
 Translations
