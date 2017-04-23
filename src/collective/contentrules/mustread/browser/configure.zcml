@@ -22,6 +22,14 @@
 
   <browser:page
       for="*"
+      name="send-expired-notification"
+      class=".views.ExpiredNotificationEmail"
+      permission="collective.contentrules.mustread.AccessReadStatistics"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+  <browser:page
+      for="*"
       name="read-statistic-csv"
       class=".stats.CSVExport"
       permission="collective.contentrules.mustread.AccessReadStatistics"

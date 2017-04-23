@@ -8,7 +8,7 @@ A notification email is sent to all users when the read confirmation is requeste
 
 An optional reminder email is sent to all users that did not confirm their read-requests 2 days (configurable) before the deadline.
 
-When read-requests for a content item have expired, a notification email is sent to a configurable emailaddress that lists all users that did not confirm the item as read in time.
+When read-requests for content items have expired, a notification email is sent to a configurable emailaddress that lists all unread documents and which users did not confirm the item as read in time.
 
 Site-Administrators can view read-statistics (per content-item and site-wide) as well as download a CSV list of all read-requests.
 
@@ -118,6 +118,8 @@ You'll see a satusmessage indicating which usernames got notified.
 
 If you want your users to get notified again some days before the deadline, you'll want to `Setup a reminder`_.
 
+You can also `Setup an expiration notification`_ (an email report of missed read requests - which documents have missed requests and which users did not read the document).
+
 There is a csv export (`@@read-statistic-csv`) that lists all mustread records (useful as audit-log or doing advanced spreadsheet-magic).
 
 .. XXX add action for this view (in portal level?)
@@ -140,6 +142,16 @@ You can use a clockserver (similar to https://github.com/collective/collective.t
 
     * https://docs.plone.org/develop/plone/misc/asyncronoustasks.html
     * idea: use secrets as munin.zope does so we need no authentication in the cronjob
+
+Setup an expiration notification
+--------------------------------
+
+The view `@@send-expired-notification` lists all documents having open read requests and notifies the portal's admin address.
+
+(Currently you'll have to overwrite the view attribute `RECIPIENT_EMAIL` to configure a different recipient - until this can
+be configured via the registry)
+
+Make sure to call it only once a day - similar to `Setup a reminder`_
 
 
 Todos

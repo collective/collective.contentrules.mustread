@@ -281,18 +281,19 @@ class TestMustReadContentRule(unittest.TestCase):
         api.user.grant_roles('user2', obj=self.folder, roles=['Reader'])
 
         # no mustreads sheduled for our document
-        self.assertEqual(len(self.tracker.who_must_read(self.page1)), 0)
+        self.assertEqual(len(self.tracker.who_did_not_read(self.page1)), 0)
 
         # execute
         ex()
 
         # 2 mustreads have been scheduled
-        self.assertEqual(sorted(self.tracker.who_must_read(self.page1).keys()),
-                         ['user1', 'user2'])
+        self.assertEqual(sorted(
+            self.tracker.who_did_not_read(self.page1).keys()),
+            ['user1', 'user2'])
         # the deadline is 10 days from today on
         deadline = datetime.utcnow() + timedelta(10)
         self.assertEqual(
-            self.tracker.who_must_read(self.page1)['user1'].date(),
+            self.tracker.who_did_not_read(self.page1)['user1'].date(),
             deadline.date())
 
         # the user that invoked the action gets feedback in a status message
@@ -323,14 +324,6 @@ class TestMustReadContentRule(unittest.TestCase):
             (u'Dear John D=C3=B6e\nPlease read '
              u'http://nohost/plone/folder/page-1/@@mustread-hit '
              u'by ... the latest.'))
-
-    def test_confirmation_execture_exsiting(self):
-        """test with existing mustread entries
-        """
-        # statusmessage only lists new entries
-        # XXX implement when it's clear if schedule_must_read overwrites
-        # existing entries or does not touch them
-        pass
 
     def test_reminder(self):
         """

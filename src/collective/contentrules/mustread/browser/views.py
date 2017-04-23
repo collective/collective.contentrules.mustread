@@ -5,8 +5,13 @@ from collective.contentrules.mustread.event import ReadReminderEvent
 from collective.mustread.interfaces import ITracker
 from plone import api
 from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import event
 from zope.component import getUtility
+from zope.i18n import translate
+from zope.i18nmessageid.message import Message
+
+import datetime
 
 
 class RequestReadConfirmation(BrowserView):
@@ -58,3 +63,61 @@ class SendReminders(BrowserView):
         if self.context.portal_type in view_types:
             url = url + '/view'
         self.request.response.redirect(url)
+
+
+class ExpiredNotificationEmail(BrowserView):
+    """remind the portal admin when people have open read requests.
+    """
+    template = ViewPageTemplateFile('expired_email.pt')
+
+    # email address to send notification to, portal's admin address if empty
+    RECIPIENT_EMAIL = ''
+
+    SUBJECT = _(u'expired-mail-subject',
+                default=u'Expired read requests')
+
+    def __call__(self):
+        tracker = getUtility(ITracker)
+        items = tracker.what_to_read(context=self.context,
+                                     force_deadline=True)
+        data = []
+
+        for item in items:
+            users = tracker.who_did_not_read(
+                item, force_deadline=True,
+                deadline_before=datetime.datetime.utcnow())
+            info = dict(item=item, users=[])
+            for userid, deadline in users.iteritems():
+                user = api.user.get(userid)
+                info['users'].append(dict(
+                    name=user.getProperty('fullname', u''),
+                    email=user.getProperty('email'),
+                    deadline=deadline))
+            data.append(info)
+        if len(data) == 0:
+            # nothing to do
+            return
+
+        mail_text = self.template(
+            self.context,
+            self.request,
+            data=data)
+        portal = api.portal.get()
+        email_charset = portal.getProperty('email_charset')
+        mailhost = api.portal.get_tool('MailHost')
+        from_address = portal.getProperty('email_from_address')
+        if self.RECIPIENT_EMAIL:
+            recipient = self.RECIPIENT_EMAIL
+        else:
+            recipient = from_address
+
+        subject = self.SUBJECT
+        if isinstance(subject, Message):
+            subject = translate(subject, context=self.request)
+
+        mailhost.send(
+            messageText=mail_text,
+            mto=recipient,
+            mfrom=from_address,
+            subject=subject,
+            charset=email_charset)

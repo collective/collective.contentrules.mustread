@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-04-20 20:50+0000\n"
+"POT-Creation-Date: 2017-04-20 22:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,6 +59,16 @@ msgstr ""
 
 #: ../configure.zcml:60
 msgid "collective.contentrules.mustread (uninstall)"
+msgstr ""
+
+#. Default: "The following items have open read requests with expired deadlines:"
+#: ../browser/expired_email.pt:6
+msgid "expired-email-intro"
+msgstr ""
+
+#. Default: "Expired read requests"
+#: ../browser/views.py:77
+msgid "expired-mail-subject"
 msgstr ""
 
 #. Default: "Should users that have this role as an acquired role also receive this email?"
@@ -132,12 +142,12 @@ msgid "msg-confirmation-requested"
 msgstr ""
 
 #. Default: "No reminder event fired"
-#: ../browser/views.py:49
+#: ../browser/views.py:52
 msgid "msg_no_reminder_fired"
 msgstr ""
 
 #. Default: "Reminder event fired for ${count} objects: ${objects}"
-#: ../browser/views.py:40
+#: ../browser/views.py:43
 msgid "msg_reminder_fired"
 msgstr ""
 

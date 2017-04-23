@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-04-20 20:50+0000\n"
-"PO-Revision-Date: 2017-04-20 22:47+0100\n"
+"POT-Creation-Date: 2017-04-20 22:12+0000\n"
+"PO-Revision-Date: 2017-04-21 00:13+0100\n"
 "Last-Translator: Harald Friessnegger <harald@webmeisterei.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,8 @@ msgstr "Lesebestätigung anfordern "
 
 #: ../profiles/default/actions.xml
 msgid "Schedules a read request and notifies users via email"
-msgstr "Anfragen abspeichern und betroffene BenutzerInner via Email informieren"
+msgstr ""
+"Anfragen abspeichern und betroffene BenutzerInner via Email informieren"
 
 #: ../configure.zcml:60
 msgid "Uninstalls the collective.contentrules.mustread add-on."
@@ -60,6 +61,18 @@ msgstr ""
 #: ../configure.zcml:60
 msgid "collective.contentrules.mustread (uninstall)"
 msgstr ""
+
+#. Default: "The following items have open read requests with expired deadlines:"
+#: ../browser/expired_email.pt:6
+msgid "expired-email-intro"
+msgstr ""
+"Für die folgenden Inhalte gibt es abgelaufene Anfragen für eine "
+"Lesebestätigung:"
+
+#. Default: "Expired read requests"
+#: ../browser/views.py:77
+msgid "expired-mail-subject"
+msgstr "Abgelaufene Anfragen für Lesebestätigungen"
 
 #. Default: "Should users that have this role as an acquired role also receive this email?"
 #: ../actions/mail.py:58
@@ -132,12 +145,12 @@ msgid "msg-confirmation-requested"
 msgstr ""
 
 #. Default: "No reminder event fired"
-#: ../browser/views.py:49
+#: ../browser/views.py:52
 msgid "msg_no_reminder_fired"
 msgstr ""
 
 #. Default: "Reminder event fired for ${count} objects: ${objects}"
-#: ../browser/views.py:40
+#: ../browser/views.py:43
 msgid "msg_reminder_fired"
 msgstr ""
 
@@ -160,3 +173,4 @@ msgstr ""
 #: ../actions/mail.py:455
 msgid "title_editform"
 msgstr ""
+

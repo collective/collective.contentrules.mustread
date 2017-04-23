@@ -293,7 +293,7 @@ class BaseExecutor(object):
         """
         obj = self.event.object
         tracker = getUtility(ITracker)
-        deadlines = tracker.who_must_read(obj)
+        deadlines = tracker.who_did_not_read(obj)
         deadline = deadlines.get(userid, None)
         if deadline:
             deadline = api.portal.get_localized_time(deadline, False)
@@ -397,7 +397,7 @@ class MustReadReminderExecutor(BaseExecutor):
         today = datetime.utcnow().date()
         remind_today = []
         too_early = []
-        for userid, deadline in tracker.who_must_read(obj).iteritems():
+        for userid, deadline in tracker.who_did_not_read(obj).iteritems():
             reminder_date = (
                 deadline - timedelta(self.element.reminder_delay)).date()
             if reminder_date == today:
