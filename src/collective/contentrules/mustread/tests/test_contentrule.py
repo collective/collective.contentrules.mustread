@@ -218,7 +218,7 @@ class TestMustReadContentRule(unittest.TestCase):
 
         self.assertEqual(
             interpolator(u'url: ${mustread_url}'),
-            'url: http://nohost/plone/folder/page-1/@@mustread-hit')
+            'url: http://nohost/plone/folder/page-1/@@mark-read')
 
         # we need a mustread db entry for this user and page in order to
         # obtain the deadline
@@ -322,8 +322,8 @@ class TestMustReadContentRule(unittest.TestCase):
         self.assertEqualEllipsis(
             msg2.get_payload(),
             (u'Dear John D=C3=B6e\nPlease read '
-             u'http://nohost/plone/folder/page-1/@@mustread-hit '
-             u'by ... the latest.'))
+             u'http://nohost/plone/folder/page-1/@@mark-read '
+             u'by ... t=\nhe latest.'))
 
     def test_reminder(self):
         """

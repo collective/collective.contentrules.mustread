@@ -35,4 +35,4 @@ class URL(BaseSubstitution):
     description = u'URL of the item that marks the object as read'
 
     def safe_call(self):
-        return self.context.absolute_url() + '/@@mustread-hit'
+        return self.context.absolute_url() + '/@@mark-read'

@@ -1,0 +1,9 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope">
+
+  <!-- apply our marker interface to non-folderish ATContentTypes -->
+  <class class="Products.ATContentTypes.content.base.ATCTContent">
+    <implements interface=".interfaces.ICanBeMarkedAsMustRead" />
+  </class>
+
+</configure>

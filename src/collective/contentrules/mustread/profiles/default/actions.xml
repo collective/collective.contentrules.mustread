@@ -12,7 +12,7 @@
       <property name="title" i18n:translate="">Request read confirmation</property>
       <property name="description" i18n:translate="">Schedules a read request and notifies users via email</property>
       <property name="url_expr">string:${globals_view/getCurrentObjectUrl}/@@request-read-confirmation</property>
-      <property name="available_expr">python:True</property>
+      <property name="available_expr">here/@@mustread-enabled</property>
       <property name="permissions">
         <element value="collective.contentrules.mustread: Request read confirmation"/>
       </property>

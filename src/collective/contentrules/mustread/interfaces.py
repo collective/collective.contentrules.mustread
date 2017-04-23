@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from zope.component.interfaces import IObjectEvent
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
@@ -27,5 +28,11 @@ class IReadReminder(IMustReadEvent):
 
 class ICollectiveContentrulesMustreadLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
+
+    pass
+
+
+class ICanBeMarkedAsMustRead(Interface):
+    """Marker for content that shows mustread actions"""
 
     pass

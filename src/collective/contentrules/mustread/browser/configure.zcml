@@ -6,9 +6,25 @@
 
   <browser:page
       for="*"
+      name="mustread-enabled"
+      class=".views.MustReadEnabled"
+      permission="zope2.View"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+  <browser:page
+      for="..interfaces.ICanBeMarkedAsMustRead"
       name="request-read-confirmation"
       class=".views.RequestReadConfirmation"
       permission="collective.contentrules.mustread.RequestReadConfirmation"
+      layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
+      />
+
+  <browser:page
+      for="..interfaces.ICanBeMarkedAsMustRead"
+      name="mark-read"
+      class=".views.MarkRead"
+      permission="zope2.View"
       layer="collective.contentrules.mustread.interfaces.ICollectiveContentrulesMustreadLayer"
       />
 

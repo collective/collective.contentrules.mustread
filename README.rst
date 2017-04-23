@@ -20,6 +20,7 @@ The content rule allows to configure
 
 This addon depends on `collective.mustread <https://pypi.python.org/pypi/collective.mustread>`_.
 
+To enable must-read actions on non-folderish ATContentTypes include archetypes.zcml (see Installation_).
 
 Setup contentrule
 -----------------
@@ -156,6 +157,11 @@ Make sure to call it only once a day - similar to `Setup a reminder`_
 Todos
 -----
 
+- limitation of types that offer must-read actions is done by marker interface
+  (see archetypes.zcml) - there might be nicer ways
+
+- implement dexterity behaviour for ICanBeMarkedAsMustRead
+
 - View that shows mustread records for an object or context including child-objects.
 
   Grouped in the following categories:
@@ -188,6 +194,10 @@ Install collective.contentrules.mustread by adding it to your buildout::
     eggs =
         collective.contentrules.mustread
 
+    zcml =
+        collective.contentrules.mustread-archetypes
+
+.. ATTENTION:: when using atcontenttypes, also include archetypes.zcml or apply marker interface to your types
 
 and then running ``bin/buildout``
 

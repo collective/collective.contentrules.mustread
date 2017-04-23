@@ -1,0 +1,19 @@
+<tal:root
+    define="data python:options['data'];
+            portal_state context/@@plone_portal_state;
+            isAnon context/@@plone_portal_state/anonymous;">
+
+<div i18n:domain="collective.contentrules.mustread"
+     i18n:translate="expired-email-intro"
+     tal:omit-tag="">
+The following items have open read requests with expired deadlines:
+</div>
+
+<tal:items repeat="info data" omit-tag="">
+<span tal:replace="info/item/Title"/> (<span tal:replace="info/item/absolute_url"/>)
+<tal:users repeat="user info/users" omit-tag="">
+* <span tal:replace="user/name"/> (<span tal:replace="user/email"/>) - <span tal:replace="user/deadline"/>
+</tal:users>
+</tal:items>
+
+</tal:root>

@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from collective.contentrules.mustread import _
+from collective.contentrules.mustread.interfaces import ICanBeMarkedAsMustRead
 from collective.contentrules.mustread.event import ReadConfirmationRequestEvent
 from collective.contentrules.mustread.event import ReadReminderEvent
 from collective.mustread.interfaces import ITracker
@@ -14,13 +15,19 @@ from zope.i18nmessageid.message import Message
 import datetime
 
 
-class RequestReadConfirmation(BrowserView):
-    """triggers a ReadConfirmationRequestEvent to notify
-    contentrules engine
+class MustReadEnabled(BrowserView):
+    """returns true if mustread actions
+    (such as request read confirmations, mark as read)
+    are  available on the context
     """
 
     def __call__(self):
-        event.notify(ReadConfirmationRequestEvent(self.context))
+        return ICanBeMarkedAsMustRead.providedBy(self.context)
+
+
+class BaseView(BrowserView):
+
+    def do_redirect(self):
         props = api.portal.get_tool('portal_properties').site_properties
         view_types = props.getProperty('typesUseViewActionInListings', [])
         url = self.context.absolute_url()
@@ -29,7 +36,26 @@ class RequestReadConfirmation(BrowserView):
         self.request.response.redirect(url)
 
 
-class SendReminders(BrowserView):
+class RequestReadConfirmation(BaseView):
+    """triggers a ReadConfirmationRequestEvent to notify
+    contentrules engine
+    """
+
+    def __call__(self):
+        event.notify(ReadConfirmationRequestEvent(self.context))
+        self.do_redirect()
+
+
+class MarkRead(BrowserView):
+    """marks context as read for currently logged in user
+    """
+
+    def __call__(self):
+        tracker = getUtility(ITracker)
+        tracker.mark_read(self.context)
+
+
+class SendReminders(BaseView):
     """finds objects with unconfirmed read requests
     and notifies contentrules engine for each of them
     """
@@ -57,12 +83,7 @@ class SendReminders(BrowserView):
                 self.request,
                 'info')
 
-        props = api.portal.get_tool('portal_properties').site_properties
-        view_types = props.getProperty('typesUseViewActionInListings', [])
-        url = self.context.absolute_url()
-        if self.context.portal_type in view_types:
-            url = url + '/view'
-        self.request.response.redirect(url)
+        self.do_redirect()
 
 
 class ExpiredNotificationEmail(BrowserView):

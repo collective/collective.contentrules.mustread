@@ -19,6 +19,8 @@ class CollectiveContentrulesMustreadLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         self.loadZCML(package=collective.contentrules.mustread)
+        self.loadZCML(package=collective.contentrules.mustread,
+                      name='archetypes.zcml')
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'collective.contentrules.mustread:default')
