@@ -46,13 +46,14 @@ class RequestReadConfirmation(BaseView):
         self.do_redirect()
 
 
-class MarkRead(BrowserView):
+class MarkRead(BaseView):
     """marks context as read for currently logged in user
     """
 
     def __call__(self):
         tracker = getUtility(ITracker)
         tracker.mark_read(self.context)
+        self.do_redirect()
 
 
 class SendReminders(BaseView):

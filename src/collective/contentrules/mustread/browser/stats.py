@@ -13,7 +13,7 @@ class CSVExport(BrowserView):
 
     @property
     def filename(self):
-        return 'must-read-{date:%Y-%m-%d}-{path}'.format(
+        return 'must-read-{date:%Y-%m-%d}-{path}.csv'.format(
             date=date.today(),
             path='-'.join(self.context.getPhysicalPath()))
 

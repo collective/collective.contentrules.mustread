@@ -269,8 +269,6 @@ class BaseExecutor(object):
                 continue
 
             fullname = member.getProperty('fullname', '')
-            # XXX test if this works or if mto needs to be a plain
-            # mail-address and we need to add this in the To: header manually
             recipient = formataddr((fullname, email))
 
             interpolator = self._get_interpolator(user)
