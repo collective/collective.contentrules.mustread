@@ -103,7 +103,7 @@ class TestMustReadViews(unittest.TestCase):
                           '@@request-read-confirmation')
 
         # site admins and managers have the proper permission
-        setRoles(self.portal, TEST_USER_ID, ['Site Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Site Administrator'])
         view = self.page1.restrictedTraverse('@@request-read-confirmation')
         view()
         self.assertEqual(len(self.event_catcher.fired), 1)
@@ -127,7 +127,7 @@ class TestMustReadViews(unittest.TestCase):
                           '@@send-read-reminders')
 
         # site admins and managers have the proper permission
-        setRoles(self.portal, TEST_USER_ID, ['Site Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Site Administrator'])
 
         # calling our view w/o open requests results in no events fired
         view = self.portal.restrictedTraverse('@@send-read-reminders')
@@ -169,7 +169,7 @@ class TestMustReadViews(unittest.TestCase):
                           '@@send-expired-notification')
 
         # site admins and managers have the proper permission
-        setRoles(self.portal, TEST_USER_ID, ['Site Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Site Administrator'])
         # if we provide a site mail address this won't fail anymore
         sm = zope.component.getSiteManager(context=self.portal)
         sm.manage_changeProperties({'email_from_address': 'admin@site.com',
@@ -215,7 +215,7 @@ class TestMustReadViews(unittest.TestCase):
                           '@@read-statistic-csv')
 
         # site admins and managers have the proper permission
-        setRoles(self.portal, TEST_USER_ID, ['Site Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Site Administrator'])
         view = self.portal.restrictedTraverse('@@read-statistic-csv')
 
         # no db entries, only headers are returned
