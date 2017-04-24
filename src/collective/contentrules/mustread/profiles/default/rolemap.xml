@@ -5,12 +5,12 @@
 
     <permission name="collective.contentrules.mustread: Request read confirmation" acquire="False">
       <role name="Manager" />
-      <role name="Site Manager" />
+      <role name="Site Administrator" />
     </permission>
 
     <permission name="collective.contentrules.mustread: Access read statistics" acquire="False">
       <role name="Manager" />
-      <role name="Site Manager" />
+      <role name="Site Administrator" />
     </permission>
 
   </permissions>
