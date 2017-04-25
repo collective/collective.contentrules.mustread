@@ -5,6 +5,7 @@ from collective.contentrules.mustread.event import ReadConfirmationRequestEvent
 from collective.contentrules.mustread.event import ReadReminderEvent
 from collective.mustread.interfaces import ITracker
 from plone import api
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import event
@@ -13,6 +14,10 @@ from zope.i18n import translate
 from zope.i18nmessageid.message import Message
 
 import datetime
+import logging
+
+
+logger = logging.getLogger('collective.contentrules.mustread')
 
 
 class MustReadEnabled(BrowserView):
@@ -99,25 +104,32 @@ class ExpiredNotificationEmail(BrowserView):
                 default=u'Expired read requests')
 
     def __call__(self):
+        path = '/'.join(self.context.getPhysicalPath())
+        logger.warn('processing expired notifications for context ' + path)
         tracker = getUtility(ITracker)
         items = tracker.what_to_read(context=self.context,
                                      force_deadline=True)
         data = []
-
+        today_12_pm = datetime.datetime.combine(datetime.datetime.utcnow(),
+                                                datetime.time.max)
         for item in items:
+            path = '/'.join(item.getPhysicalPath())
             users = tracker.who_did_not_read(
                 item, force_deadline=True,
-                deadline_before=datetime.datetime.utcnow())
+                deadline_before=today_12_pm)
             info = dict(item=item, users=[])
             for userid, deadline in users.iteritems():
                 user = api.user.get(userid)
                 info['users'].append(dict(
                     name=user.getProperty('fullname', u''),
                     email=user.getProperty('email'),
-                    deadline=deadline))
+                    deadline=api.portal.get_localized_time(deadline, True)))
             data.append(info)
         if len(data) == 0:
             # nothing to do
+            logger.info((u'no open read requests ending before '
+                         '{0:%Y-%m-%d %h:%M} for {1}').format(today_12_pm,
+                                                              path))
             return
 
         mail_text = self.template(
@@ -137,6 +149,8 @@ class ExpiredNotificationEmail(BrowserView):
         if isinstance(subject, Message):
             subject = translate(subject, context=self.request)
 
+        logger.info(u'Sending expired notification to {0}:\n{1}\n'.format(
+            safe_unicode(recipient), safe_unicode(mail_text)))
         mailhost.send(
             messageText=mail_text,
             mto=recipient,
