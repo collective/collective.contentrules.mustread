@@ -134,15 +134,14 @@ users if today's date equals `deadline of the reminder - notification-delay` (wh
 
 You can use a clockserver (similar to https://github.com/collective/collective.timedevents) or a cronjob (z3c.recipe.usercrontab) for this.
 
+This is an example for a cronjob that sends out reminder emails at 7am::
+
+  0  7  *   *   *     wget --quiet -O- --user=admin --password=admin --auth-no-challenge http://127.0.0.1:8080/Plone/@@send-read-reminders > /dev/null
+
 .. ATTENTION::
    make sure to call this view only once a day since the system does not keep records for sent notifications
    and users would get multiple reminder emails.
 
-
-.. XXX decide for setup and document here
-
-    * https://docs.plone.org/develop/plone/misc/asyncronoustasks.html
-    * idea: use secrets as munin.zope does so we need no authentication in the cronjob
 
 Setup an expiration notification
 --------------------------------
@@ -180,6 +179,9 @@ Todos
 - implement dexterity behaviour for ICanBeMarkedAsMustRead
 
 - Idea: separate content-action for notifications so we can define multiple notifications with different delays and texts
+
+- Idea: allow to call @@send-read-reminders w/o authentication using a secret
+  (similar to munin.zope)
 
 
 Translations
