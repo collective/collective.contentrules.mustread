@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-04-20 22:12+0000\n"
+"POT-Creation-Date: 2017-04-26 13:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 
 #: ../configure.zcml:51
 msgid "Installs the collective.contentrules.mustread add-on."
+msgstr ""
+
+#: ../profiles/default/actions.xml
+msgid "Mustread CSV Export"
 msgstr ""
 
 #: ../actions/mail.py:82
@@ -49,6 +53,10 @@ msgstr ""
 msgid "Schedules a read request and notifies users via email"
 msgstr ""
 
+#: ../browser/views.py:160
+msgid "The following report has been sent to ${email}:"
+msgstr ""
+
 #: ../configure.zcml:60
 msgid "Uninstalls the collective.contentrules.mustread add-on."
 msgstr ""
@@ -67,7 +75,7 @@ msgid "expired-email-intro"
 msgstr ""
 
 #. Default: "Expired read requests"
-#: ../browser/views.py:77
+#: ../browser/views.py:101
 msgid "expired-mail-subject"
 msgstr ""
 
@@ -111,14 +119,19 @@ msgstr ""
 msgid "field_role_title"
 msgstr ""
 
-#. Default: "A mail action that can mail plone users who have a role on the object"
-#: ../actions/mail.py:427
+#. Default: "An action action that requests a read-confirmation from users who have a role on the object"
+#: ../actions/mail.py:425
 msgid "form_description"
 msgstr ""
 
 #. Default: "Number of days a read requests must be confirmed within. Will be used to compute the deadline of requests."
 #: ../actions/mail.py:111
 msgid "help_deadline"
+msgstr ""
+
+#. Default: "Email address(es) the expired notifications are sent to If not given, the portal's admin address is used"
+#: ../interfaces.py:16
+msgid "help_expired-recipient"
 msgstr ""
 
 #. Default: "Defines how many days before the deadline a reminder email will be sent"
@@ -131,23 +144,28 @@ msgstr ""
 msgid "label_deadline"
 msgstr ""
 
+#. Default: "Expired recipient"
+#: ../interfaces.py:14
+msgid "label_expired-recipient"
+msgstr ""
+
 #. Default: "Reminder Delay"
 #: ../actions/mail.py:121
 msgid "label_reminder-delay"
 msgstr ""
 
 #. Default: "Read confirmation requested by ${deadline} for ${count} users: ${userlist}"
-#: ../actions/mail.py:351
+#: ../actions/mail.py:349
 msgid "msg-confirmation-requested"
 msgstr ""
 
 #. Default: "No reminder event fired"
-#: ../browser/views.py:52
+#: ../browser/views.py:87
 msgid "msg_no_reminder_fired"
 msgstr ""
 
 #. Default: "Reminder event fired for ${count} objects: ${objects}"
-#: ../browser/views.py:43
+#: ../browser/views.py:78
 msgid "msg_reminder_fired"
 msgstr ""
 
@@ -162,11 +180,11 @@ msgid "rule_description_noreminder"
 msgstr ""
 
 #. Default: "Add MustRead Action"
-#: ../actions/mail.py:440
+#: ../actions/mail.py:438
 msgid "title_addform"
 msgstr ""
 
 #. Default: "Edit MustRead Action"
-#: ../actions/mail.py:455
+#: ../actions/mail.py:453
 msgid "title_editform"
 msgstr ""

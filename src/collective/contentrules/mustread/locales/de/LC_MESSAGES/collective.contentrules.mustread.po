@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-04-20 22:12+0000\n"
-"PO-Revision-Date: 2017-04-21 00:13+0100\n"
+"POT-Creation-Date: 2017-04-26 13:49+0000\n"
+"PO-Revision-Date: 2017-04-26 15:52+0100\n"
 "Last-Translator: Harald Friessnegger <harald@webmeisterei.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,26 +20,32 @@ msgstr ""
 #: ../configure.zcml:51
 msgid "Installs the collective.contentrules.mustread add-on."
 msgstr ""
+"Installiert die Erweiterung für das Anfordern von Lesebestätigungen "
+"(collective.contentrules.mustread)"
+
+#: ../profiles/default/actions.xml
+msgid "Mustread CSV Export"
+msgstr "Lesestatistiken CSV Export "
 
 #: ../actions/mail.py:82
 msgid "Notification Message"
-msgstr ""
+msgstr "Nachrichtentext Leseaufforderung"
 
 #: ../actions/mail.py:76
 msgid "Notification Subject"
-msgstr ""
+msgstr "Betreff Leseaufforderung"
 
 #: ../configure.zcml:19
 msgid "Read confirmation requested"
-msgstr ""
+msgstr "Lesebestätigung angefordert"
 
 #: ../actions/mail.py:100
 msgid "Reminder Message"
-msgstr ""
+msgstr "Nachrichtentext Erinnerung "
 
 #: ../actions/mail.py:94
 msgid "Reminder Subject"
-msgstr ""
+msgstr "Betreff Erinnerung "
 
 #: ../profiles/default/actions.xml
 msgid "Request read confirmation"
@@ -50,17 +56,25 @@ msgid "Schedules a read request and notifies users via email"
 msgstr ""
 "Anfragen abspeichern und betroffene BenutzerInner via Email informieren"
 
+#: ../browser/views.py:160
+msgid "The following report has been sent to ${email}:"
+msgstr "Folgender Bericht wurde an ${email} zugestellt:"
+
 #: ../configure.zcml:60
 msgid "Uninstalls the collective.contentrules.mustread add-on."
-msgstr ""
+msgstr "Erweiterung für das Anfordern von Lesebestätigungen deinstallieren."
 
 #: ../configure.zcml:51
 msgid "collective.contentrules.mustread"
 msgstr ""
+"Erweiterung für das Anfordern von Lesebestätigungen "
+"(collective.contentrules.mustread)"
 
 #: ../configure.zcml:60
 msgid "collective.contentrules.mustread (uninstall)"
 msgstr ""
+"Erweiterung für das Anfordern von Lesebestätigungen "
+"(collective.contentrules.mustread) deinstallieren."
 
 #. Default: "The following items have open read requests with expired deadlines:"
 #: ../browser/expired_email.pt:6
@@ -70,107 +84,139 @@ msgstr ""
 "Lesebestätigung:"
 
 #. Default: "Expired read requests"
-#: ../browser/views.py:77
+#: ../browser/views.py:101
 msgid "expired-mail-subject"
 msgstr "Abgelaufene Anfragen für Lesebestätigungen"
 
 #. Default: "Should users that have this role as an acquired role also receive this email?"
 #: ../actions/mail.py:58
 msgid "field_acquired_description"
-msgstr ""
+msgstr "Benutzer die diese Rolle geerbt haben mit einbeziehen? "
 
 #. Default: "Acquired Roles"
 #: ../actions/mail.py:57
 msgid "field_acquired_title"
-msgstr ""
+msgstr "Geerbte Rollen"
 
 #. Default: "Should users that have this role as a role in the whole site also receive this email?"
 #: ../actions/mail.py:68
 msgid "field_global_roles_description"
 msgstr ""
+"Benutzer die diese Rolle als \"Globale Rolle\" besitzen mit einbeziehen?"
 
 #. Default: "Global Roles"
 #: ../actions/mail.py:67
 msgid "field_global_roles_title"
-msgstr ""
+msgstr "Globale Rollen"
 
 #. Default: "Type in here the message that you want to mail. Some defined content can be replaced: ${title} will be replaced by the title of the newly created item. ${url} will be replaced by the URL of the newly created item."
 #: ../actions/mail.py:83
 msgid "field_message_description"
 msgstr ""
+"Text der Emailbenarchichtigung beim Anfordern der Lesebestätigung. Zusätzlich "
+"verfügbare Variablen: mustread_fullname, mustread_deadline, mustread_url "
+"(siehe README)"
 
 #. Default: "leave empty to not send a reminder message"
 #: ../actions/mail.py:101
 msgid "field_message_reminder_description"
 msgstr ""
+"Text der Erinnerungsemail. Wenn kein Text angegeben ist, wird keine "
+"Erinnerungsmail verschickt."
 
 #. Default: "Select a role. The action will look up the all Plone site users who explicitly have this role (also via groups) on the object and send a message to their email address."
 #: ../actions/mail.py:47
 msgid "field_role_description"
 msgstr ""
+"Wählen Sie eine Rolle aus. Diese Aktion sucht nach Benutzern auf der Seite "
+"die diese Rolle (auch über eine Gruppe) auf dem Inhalt besitzen für den eine "
+"Lesebestätigung angefordert wurde."
 
 #. Default: "Role"
 #: ../actions/mail.py:46
 msgid "field_role_title"
-msgstr ""
+msgstr "Rolle"
 
-#. Default: "A mail action that can mail plone users who have a role on the object"
-#: ../actions/mail.py:427
+#. Default: "An action action that requests a read-confirmation from users who have a role on the object"
+#: ../actions/mail.py:425
 msgid "form_description"
 msgstr ""
+"Eine Aktion die eine Lesebestätigung von Benutzern mit einer bestimmten Rolle "
+"auf einem Inhalt anfordert."
 
 #. Default: "Number of days a read requests must be confirmed within. Will be used to compute the deadline of requests."
 #: ../actions/mail.py:111
 msgid "help_deadline"
 msgstr ""
+"Anzahl der Tage innerhalb derer die Leseaufforderung bestätigt werden muss."
+
+#. Default: "Email address(es) the expired notifications are sent to If not given, the portal's admin address is used"
+#: ../interfaces.py:16
+msgid "help_expired-recipient"
+msgstr ""
+"Empfängeradresse(n) für die Ablauf-Info Mail (@@send-expired-notification). "
+"Wenn nicht angegeben wird die Mail an die Portal-Admin-Adresse geschickt."
 
 #. Default: "Defines how many days before the deadline a reminder email will be sent"
 #: ../actions/mail.py:122
 msgid "help_reminder-delay"
 msgstr ""
+"Anzahl der Tage vor Ablauf der Leseaufforderung an denen eine Erinnerungsmail "
+"verschickt wird."
 
 #. Default: "Deadline Delay"
 #: ../actions/mail.py:110
 msgid "label_deadline"
-msgstr ""
+msgstr "Tage bis zum Ablauf"
+
+#. Default: "Expired recipient"
+#: ../interfaces.py:14
+msgid "label_expired-recipient"
+msgstr "Empfänger Ablauf-Info-Mail"
 
 #. Default: "Reminder Delay"
 #: ../actions/mail.py:121
 msgid "label_reminder-delay"
-msgstr ""
+msgstr "Erinnerung N Tage vor Ablauf"
 
 #. Default: "Read confirmation requested by ${deadline} for ${count} users: ${userlist}"
-#: ../actions/mail.py:351
+#: ../actions/mail.py:349
 msgid "msg-confirmation-requested"
 msgstr ""
+"Lesebestätigung bis zum ${deadline} für ${count} Benutzer angefordert: "
+"${userlist}"
 
 #. Default: "No reminder event fired"
-#: ../browser/views.py:52
+#: ../browser/views.py:87
 msgid "msg_no_reminder_fired"
-msgstr ""
+msgstr "Keine Erinnungen versendet"
 
 #. Default: "Reminder event fired for ${count} objects: ${objects}"
-#: ../browser/views.py:43
+#: ../browser/views.py:78
 msgid "msg_reminder_fired"
-msgstr ""
+msgstr "Erinnerungsmails für ${count} Inhalte versendet: ${objects}"
 
 #. Default: "Request confirmation for users with role '${role}' on the object (deadline today + ${days} days, reminder ${reminder} days before deadline)"
 #: ../actions/mail.py:163
 msgid "rule_description"
 msgstr ""
+"Lesebestätigung für Benutzer mit der Rolle '${role}' auf einem Inhalt (Ablauf "
+"in ${days} Tagen, Erinnerung ${reminder} Tage vor Ablauf)"
 
 #. Default: "Request confirmation for users with role '${role}' on the object (deadline today + ${days} days, no reminder)"
 #: ../actions/mail.py:155
 msgid "rule_description_noreminder"
 msgstr ""
+"Lesebestätigung für Benutzer mit der Rolle '${role}' auf einem Inhalt (Ablauf "
+"in ${days} Tagen, keine Erinnerung versenden)"
 
 #. Default: "Add MustRead Action"
-#: ../actions/mail.py:440
+#: ../actions/mail.py:438
 msgid "title_addform"
-msgstr ""
+msgstr "Aktion für Lesebestätigung hinzufügen"
 
 #. Default: "Edit MustRead Action"
-#: ../actions/mail.py:455
+#: ../actions/mail.py:453
 msgid "title_editform"
-msgstr ""
+msgstr "Aktion für Lesebestätigung bearbeiten"
 

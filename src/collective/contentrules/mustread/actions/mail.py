@@ -425,8 +425,8 @@ class MustReadReminderExecutor(BaseExecutor):
 form_description = _(
     u'form_description',
     default=(
-        u"A mail action that can mail plone users who have "
-        u"a role on the object")
+        u"An action action that requests a read-confirmation from users who "
+        u"have a role on the object")
     )
 
 
