@@ -148,8 +148,7 @@ Setup an expiration notification
 
 The view `@@send-expired-notification` lists all documents having open read requests and notifies the portal's admin address.
 
-(Currently you'll have to overwrite the view attribute `RECIPIENT_EMAIL` to configure a different recipient - until this can
-be configured via the registry)
+You can configure the recipients in the registry record `collective.contentrules.mustread.interfaces.IMustReadSettings.expired_recipient`
 
 Make sure to call it only once a day - similar to `Setup a reminder`_
 
