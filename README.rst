@@ -23,7 +23,8 @@ This addon depends on `collective.mustread <https://pypi.python.org/pypi/collect
 To enable must-read actions on non-folderish ATContentTypes include archetypes.zcml (see Installation_).
 
 Setup contentrule
------------------
+=================
+
 
 Add a new content rule.
 
@@ -86,7 +87,7 @@ Reminder Delay
 
 
 Content action specific variables
-'''''''''''''''''''''''''''''''''
+---------------------------------
 
 This package defines some additional `plone.stringinterp` variables:
 
@@ -107,7 +108,7 @@ mustread_deadline
 
 
 Usage
------
+=====
 
 After `setting up the content rule <Setup contentrule>`_ you simply call the `@@request-read-confirmation` view on a content object.
 
@@ -154,7 +155,7 @@ Make sure to call it only once a day - similar to `Setup a reminder`_
 
 
 Todos
------
+=====
 
 - Report View for objects - shows mustread records for an object or context including child-objects.
 
@@ -182,7 +183,7 @@ Todos
 
 
 Translations
-------------
+============
 
 This product has been translated into
 
@@ -191,7 +192,7 @@ This product has been translated into
 
 
 Installation
-------------
+============
 
 Install collective.contentrules.mustread by adding it to your buildout::
 
@@ -216,18 +217,18 @@ And make sure to configure the Database for `collective.mustread <https://pypi.p
 
 
 Contribute
-----------
+==========
 
 - Issue Tracker: https://github.com/collective/collective.contentrules.mustread/issues
 - Source Code: https://github.com/collective/collective.contentrules.mustread
 
 Support
--------
+=======
 
 If you are having issues, please let us know `via the issue tracker <https://github.com/collective/collective.contentrules.mustread/issues>`_
 
 
 License
--------
+=======
 
 The project is licensed under the GPLv2.
