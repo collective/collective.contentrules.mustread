@@ -115,6 +115,10 @@ class ExpiredNotificationEmail(BrowserView):
             users = tracker.who_did_not_read(
                 item, force_deadline=True,
                 deadline_before=today_12_pm)
+
+            if not users:
+                # skip this item if there are no expired deadlines
+                continue
             info = dict(item=item, users=[])
             for userid, deadline in users.iteritems():
                 user = api.user.get(userid)
