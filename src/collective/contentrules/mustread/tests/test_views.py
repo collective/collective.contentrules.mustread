@@ -3,6 +3,7 @@ from AccessControl import Unauthorized
 from Acquisition import aq_base
 from collective.contentrules.mustread import testing
 from collective.contentrules.mustread.interfaces import IMustReadEvent
+from collective.contentrules.mustread.interfaces import IMustReadSettings
 from collective.contentrules.mustread.interfaces import IReadConfirmationRequest  # noqa
 from collective.contentrules.mustread.interfaces import IReadReminder
 from collective.mustread.testing import tempDb
@@ -188,13 +189,11 @@ class TestMustReadViews(unittest.TestCase):
         self.tracker.schedule_must_read(self.page1, ['user1'], deadline)
         self.tracker.schedule_must_read(self.file1, ['user1'], long_ago)
         self.tracker.mark_read(self.file1, 'user1', long_ago + timedelta(1))
-        # set recipient for the report
-        view.RECIPIENT_EMAIL = 'john@doe.com'
         view()
         messages = self.portal.MailHost.messages
         self.assertEqual(len(messages), 1)
         msg = message_from_string(messages[0])
-        self.assertEqual(msg['To'], u'john@doe.com')
+        self.assertEqual(msg['To'], u'admin@site.com')
         self.assertEqual(msg['From'], u'admin@site.com')
         self.assertEqual(msg['Subject'], '=?utf-8?q?Expired_read_requests?=')
         text = msg.get_payload()
@@ -208,6 +207,15 @@ class TestMustReadViews(unittest.TestCase):
             'File 1 (http://nohost/plone/folder-2/file1.txt)' in text)
         # user1 is listed for both objects
         self.assertEqual(text.count('user1@plone.org'), 2)
+
+        # if we set the expired_recipient in the registry settings,
+        # reports are sent to this address
+        api.portal.set_registry_record('expired_recipient',
+                                       [u'john@doe.com', u'foo@bar.baz'],
+                                       IMustReadSettings)
+        view()
+        msg = message_from_string(messages[-1])
+        self.assertEqual(msg['To'], 'john@doe.com, foo@bar.baz')
 
     def test_stats_csv(self):
         # ordinary members must not access our view

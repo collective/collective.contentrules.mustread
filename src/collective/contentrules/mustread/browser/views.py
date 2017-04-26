@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 from collective.contentrules.mustread import _
-from collective.contentrules.mustread.interfaces import ICanBeMarkedAsMustRead
 from collective.contentrules.mustread.event import ReadConfirmationRequestEvent
 from collective.contentrules.mustread.event import ReadReminderEvent
+from collective.contentrules.mustread.interfaces import ICanBeMarkedAsMustRead
+from collective.contentrules.mustread.interfaces import IMustReadSettings
 from collective.mustread.interfaces import ITracker
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
@@ -97,9 +98,6 @@ class ExpiredNotificationEmail(BrowserView):
     """
     template = ViewPageTemplateFile('expired_email.pt')
 
-    # email address to send notification to, portal's admin address if empty
-    RECIPIENT_EMAIL = ''
-
     SUBJECT = _(u'expired-mail-subject',
                 default=u'Expired read requests')
 
@@ -130,7 +128,7 @@ class ExpiredNotificationEmail(BrowserView):
             logger.info((u'no open read requests ending before '
                          '{0:%Y-%m-%d %h:%M} for {1}').format(today_12_pm,
                                                               path))
-            return
+            return u'no open requests, no report sent'
 
         mail_text = self.template(
             self.context,
@@ -140,9 +138,10 @@ class ExpiredNotificationEmail(BrowserView):
         email_charset = portal.getProperty('email_charset')
         mailhost = api.portal.get_tool('MailHost')
         from_address = portal.getProperty('email_from_address')
-        if self.RECIPIENT_EMAIL:
-            recipient = self.RECIPIENT_EMAIL
-        else:
+        recipient = api.portal.get_registry_record('expired_recipient',
+                                                   IMustReadSettings,
+                                                   [])
+        if not recipient:
             recipient = from_address
 
         subject = self.SUBJECT
@@ -157,3 +156,7 @@ class ExpiredNotificationEmail(BrowserView):
             mfrom=from_address,
             subject=subject,
             charset=email_charset)
+
+        msg = _(u'The following report has been sent to ${email}:',
+                mapping=dict(email=recipient))
+        return u'{0}:\n\n:{1}'.format(translate(msg), mail_text)

@@ -157,18 +157,27 @@ Make sure to call it only once a day - similar to `Setup a reminder`_
 Todos
 -----
 
+- Report View for objects - shows mustread records for an object or context including child-objects.
+
+  * A heading for each object, links to mustread report for this object
+  * Table listing with sortable columns:
+
+    username, deadline, read-at, status (read, read too late, not read)
+
+- Add cleanup options to report view
+
+  * Remove a single mustread entry
+  * Remove all mustread entries
+
+- Report view for users (link usernames in report for object)
+
+  Table listing all objects the user has read, not read, read too late.
+
+
 - limitation of types that offer must-read actions is done by marker interface
   (see archetypes.zcml) - there might be nicer ways
 
 - implement dexterity behaviour for ICanBeMarkedAsMustRead
-
-- View that shows mustread records for an object or context including child-objects.
-
-  Grouped in the following categories:
-
-  * read before deadline
-  * read after deadline
-  * not read at all
 
 - Idea: separate content-action for notifications so we can define multiple notifications with different delays and texts
 
