@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 
 setup(
     name='collective.contentrules.mustread',
-    version='1.0a2.dev0',
+    version='1.0a2',
     description="Define which users need to mark a content item as read (via collective.mustread)",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers

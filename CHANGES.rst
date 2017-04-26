@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0a2 (unreleased)
+1.0a2 (2017-04-26)
 ------------------
 
 - Do not send expiration email if there are no users with deadlines
