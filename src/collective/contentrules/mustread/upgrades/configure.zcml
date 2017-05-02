@@ -1,0 +1,15 @@
+<configure
+     xmlns="http://namespaces.zope.org/zope"
+     xmlns:gs="http://namespaces.zope.org/genericsetup"
+     xmlns:zcml="http://namespaces.zope.org/zcml"
+     >
+
+   <gs:upgradeStep
+       destination="1001"
+       handler=".steps.to_1001_fix_registry_records"
+       source="1000"
+       profile="collective.contentrules.mustread:default"
+       title="add new registry setting expired_force_deadline"
+       />
+
+ </configure>

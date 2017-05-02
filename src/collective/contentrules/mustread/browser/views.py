@@ -105,15 +105,19 @@ class ExpiredNotificationEmail(BrowserView):
         path = '/'.join(self.context.getPhysicalPath())
         logger.warn('processing expired notifications for context ' + path)
         tracker = getUtility(ITracker)
+
+        force_deadline = api.portal.get_registry_record(
+            'expired_force_deadline', IMustReadSettings, True)
+
         items = tracker.what_to_read(context=self.context,
-                                     force_deadline=True)
+                                     force_deadline=force_deadline)
         data = []
         today_12_pm = datetime.datetime.combine(datetime.datetime.utcnow(),
                                                 datetime.time.max)
         for item in items:
             path = '/'.join(item.getPhysicalPath())
             users = tracker.who_did_not_read(
-                item, force_deadline=True,
+                item, force_deadline=force_deadline,
                 deadline_before=today_12_pm)
 
             if not users:

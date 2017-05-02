@@ -208,6 +208,18 @@ class TestMustReadViews(unittest.TestCase):
         # user1 is listed for both objects
         self.assertEqual(text.count('user1@plone.org'), 2)
 
+        # if we set expired_force_deadline=False in the registry,
+        # user1 is not reported as expired for file1 (which he has read
+        # too late)
+        api.portal.set_registry_record('expired_force_deadline', False,
+                                       IMustReadSettings)
+        view()
+        msg = message_from_string(messages[-1])
+        text = msg.get_payload()
+        self.assertFalse(
+            'File 1 (http://nohost/plone/folder-2/file1.txt)' in text)
+        self.assertEqual(text.count('user1@plone.org'), 1)
+
         # if we set the expired_recipient in the registry settings,
         # reports are sent to this address
         api.portal.set_registry_record('expired_recipient',

@@ -25,6 +25,16 @@ class IMustReadSettings(Interface):
         default=[],
     )
 
+    expired_force_deadline = schema.Bool(
+        title=_(u'label_expired-deadline',
+                default=u'Force Deadline for expiration mails'),
+        description=_(
+            u'help_expired-deadline',
+            default=(u'If set to true, users that read an item after their '
+                     u'deadline get included in the email report')),
+        default=True,
+    )
+
 
 class IMustReadEvent(IObjectEvent):
     """base class for all events that shall trigger content rules engine"""

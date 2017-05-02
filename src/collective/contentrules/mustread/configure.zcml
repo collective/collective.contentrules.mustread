@@ -11,6 +11,7 @@
   <include file="permissions.zcml" />
   <include package=".actions" />
   <include package=".browser" />
+  <include package=".upgrades" />
 
   <interface
       interface=".interfaces.IMustReadEvent"
