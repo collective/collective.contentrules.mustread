@@ -5,7 +5,7 @@ Changelog
 1.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Expiration Email does not fail when a user with open read requests got deleted [fRiSi]
 
 
 1.0a2 (2017-04-26)

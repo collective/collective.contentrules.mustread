@@ -217,6 +217,41 @@ class TestMustReadViews(unittest.TestCase):
         msg = message_from_string(messages[-1])
         self.assertEqual(msg['To'], 'john@doe.com, foo@bar.baz')
 
+    def test_send_expired_notification_no_user(self):
+        """test view for users that got deleted in the meantime
+        """
+        setRoles(self.portal, TEST_USER_ID, ['Site Administrator'])
+        sm = zope.component.getSiteManager(context=self.portal)
+        sm.manage_changeProperties({'email_from_address': 'admin@site.com',
+                                    'email_from_name': 'Website Adminstratör'})
+
+        view = self.portal.restrictedTraverse('@@send-expired-notification')
+        # create some expired read requests
+        deadline = datetime.utcnow() - timedelta(hours=1)
+        self.tracker.schedule_must_read(self.page1, ['user1'], deadline)
+        # this user does not exist
+        self.tracker.schedule_must_read(self.page1, ['non-existent'], deadline)
+        view()
+        messages = self.portal.MailHost.messages
+        # view does not fail due to non-existent userid
+        # only user1 is mentioned in the email
+        self.assertEqual(len(messages), 1)
+        msg = message_from_string(messages[0])
+        self.assertEqual(msg['To'], u'admin@site.com')
+        self.assertEqual(msg['From'], u'admin@site.com')
+        self.assertEqual(msg['Subject'], '=?utf-8?q?Expired_read_requests?=')
+        text = msg.get_payload()
+        self.assertTrue((
+            'The following items have open read requests with expired '
+            'deadlines') in text)
+        # page1 is listed, as the request has not been marked as read
+        self.assertTrue('Page 1 (http://nohost/plone/folder/page-1)' in text)
+        # the non-existent user is only listed with the username
+        self.assertEqual(text.count('user1@plone.org'), 1)
+        self.assertEqual(text.count('User One'), 1)
+        self.assertEqual(text.count('non-existent'), 1)
+        self.assertEqual(text.count('* '), 2)
+
     def test_stats_csv(self):
         # ordinary members must not access our view
         self.assertRaises(Unauthorized, self.folder.restrictedTraverse,

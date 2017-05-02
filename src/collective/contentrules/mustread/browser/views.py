@@ -122,9 +122,16 @@ class ExpiredNotificationEmail(BrowserView):
             info = dict(item=item, users=[])
             for userid, deadline in users.iteritems():
                 user = api.user.get(userid)
+                if user is None:
+                    logger.warn('user does not exist anymore: ' + userid)
+                    fullname = userid
+                    email = 'user has been deleted'
+                else:
+                    fullname = user.getProperty('fullname', userid)
+                    email = user.getProperty('email')
                 info['users'].append(dict(
-                    name=user.getProperty('fullname', u''),
-                    email=user.getProperty('email'),
+                    name=fullname,
+                    email=email,
                     deadline=api.portal.get_localized_time(deadline, True)))
             data.append(info)
         if len(data) == 0:

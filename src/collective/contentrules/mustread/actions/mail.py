@@ -298,9 +298,13 @@ class BaseExecutor(object):
         else:
             deadline = ''
         user = api.user.get(userid=userid)
+        if user is None:
+            fullname = userid
+        else:
+            fullname = user.getProperty('fullname')
         wrapped = IContextWrapper(obj)(
             mustread_deadline=deadline,
-            mustread_fullname=user.getProperty('fullname'))
+            mustread_fullname=fullname)
         return IStringInterpolator(wrapped)
 
 
